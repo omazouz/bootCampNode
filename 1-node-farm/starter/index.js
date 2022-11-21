@@ -1,7 +1,13 @@
-const fs = require("fs");
-const http = require("http");
-const url = require("url");
-const replacTemplate = require("./modules/replacTemplate");
+import { dirname } from "path";
+import fs from "fs";
+import http from "http";
+import url from "url";
+import slugify from "slugify";
+
+import replacTemplate from "./modules/replaceTemplate.js";
+
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 //////////////////////////////////////////
 //////FILES
 
@@ -40,6 +46,8 @@ const tempProduct = fs.readFileSync(
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8");
 const dataObj = JSON.parse(data);
 
+const slugs = dataObj.map((el) => slugify(el.productName, { lower: true }));
+console.log("slugs", slugs);
 const server = http.createServer((req, res) => {
   const pathName = req.url;
 
